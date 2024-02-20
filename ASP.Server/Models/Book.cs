@@ -16,7 +16,7 @@ namespace ASP.Server.Models
         
         public string Name { get; set; }
 
-        public  ICollection<Author> Authors { get; set; }
+        public virtual ICollection<Author> Authors { get; set; } = new List<Author>();
 
         public decimal Price { get; set; }
 

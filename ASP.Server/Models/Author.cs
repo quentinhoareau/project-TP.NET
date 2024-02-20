@@ -19,5 +19,7 @@ namespace ASP.Server.Models
         public string LastName { get; set; }
 
         public virtual ICollection<Genre> Book { get; set; } = new List<Genre>();
+        
+        public String FullName => $"{FirstName} {LastName}";
     }
 }
