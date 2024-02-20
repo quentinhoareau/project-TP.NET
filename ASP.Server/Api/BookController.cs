@@ -78,7 +78,7 @@ namespace ASP.Server.Api
             var books = await query
                 .Skip(offset)
                 .Take(limit)
-                .ProjectTo<BookDto>(mapper.ConfigurationProvider)
+                .ProjectTo<BookWithoutContentDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
             var paginationHeader = $"{offset + 1}-{offset + books.Count}/{totalBooks}";

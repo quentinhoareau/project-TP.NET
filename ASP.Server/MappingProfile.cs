@@ -12,9 +12,9 @@ namespace ASP.Server
     {
         public MappingProfile()
         {
-            // Rajouter autant de ligne ici que vous avez de mapping Model <-> DTO
-            // https://docs.automapper.org/en/latest/
             CreateMap<Book, BookDto>();
+            CreateMap<Book, BookWithoutContentDto>();
+
             CreateMap<Genre, GenreDto>();
             CreateMap<Author, AuthorDto>();
         }
