@@ -24,7 +24,7 @@ namespace ASP.Server.Api
         [HttpGet("/api/genres")]
         public async Task<ActionResult<IEnumerable<GenreDto>>> GetGenres([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
-            IQueryable<Genre> query = libraryDbContext.Genre;
+            IQueryable<Genre> query = libraryDbContext.Genres;
             var genres = await query
                 .Skip(offset)
                 .Take(limit)
@@ -37,7 +37,7 @@ namespace ASP.Server.Api
         [HttpGet("/api/genre/{id}")]
         public async Task<ActionResult<GenreDto>> GetGenreById(int id)
         {
-            var genre = await libraryDbContext.Genre
+            var genre = await libraryDbContext.Genres
                 .Where(b => b.Id == id)
                 .ProjectTo<GenreDto>(mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();

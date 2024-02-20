@@ -1,0 +1,35 @@
+@using ASP.Server.Controllers
+@using ASP.Server.ViewModels
+@model CreateGenreViewModel
+@{
+    ViewData["Title"] = "Add a book";
+}
+<style>
+.input-group {
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+input, textarea, select {
+    flex-basis:85%;
+}
+label {
+    flex-basis:10%;
+}
+</style>
+
+<form asp-controller="Genre" asp-action="Insert">
+    <div class="input-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <span asp-validation-for="Name" class="text-danger"></span>
+    <div class="input-group">
+        <label asp-for="Books"></label>
+        <select asp-for="Books" asp-items="@(new SelectList(Model.AllBooks,"Id","Name"))">
+        </select>
+    </div>
+    <span asp-validation-for="Books" class="text-danger"></span>
+    <input type="submit" value="Add" style="width: 100%; margin-top: 50px" />
+</form>

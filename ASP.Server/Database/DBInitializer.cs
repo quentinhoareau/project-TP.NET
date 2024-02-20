@@ -30,8 +30,8 @@ namespace ASP.Server.Database
             
             // Création des auteurs
             Genre SF, Classic, Romance, Thriller, Fantasy;
-            bookDbContext.Genre.AddRange(
-                SF = new Genre() { Name = "Science Fiction" },
+            bookDbContext.Genres.AddRange(
+                SF = new Genre() { Name = "Science Fiction"},
                 Classic = new Genre() { Name = "Classic" },
                 Romance = new Genre() { Name = "Romance" },
                 Thriller = new Genre() { Name = "Thriller" },

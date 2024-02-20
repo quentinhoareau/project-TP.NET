@@ -5,26 +5,83 @@
 }
 
 <style>
-    .book .title{
+    
+    .title{
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        
+        .btn{
+            display: flex;
+            align-items: center;
+        }
+        
+        p {
+            margin: 0;
+        }
+    }
+    
+    .container-btn{
+        display: flex;
+        justify-content: end;
+        gap: 10px;
+    }
+    
+    .listBooks {
+        display:  flex;
+        flex-direction: column;
+        gap: 15px;
     }
 </style>
 
-<div class="listeBooks">
-    <h1>Liste des livres:</h1>
+<div class="listBooks">
+    <div class="title">
+        <h1>Liste des livres:</h1>
+        <a class="btn btn-primary" asp-area="" asp-controller="Book" asp-action="Create">Add new book</a>
+    </div>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
     @foreach (var book in Model)
     {
-        <div class="book">
-            <div class="title">
+        <div class="book card">
+            <div class="title card-header">
                 <H2>@book.Name</H2>
                 <p>@book.Price$</p>
             </div>
-            <p>@book.Content</p>
-             <p>book.Author</p>
-            <a asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
-            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id">Details</a>
+            <div class="card-body">
+                <p>@book.Content</p>
+                <p>
+                    Auteurs :
+                    @foreach (var author in book.Authors)
+                    {
+                        if (book.Authors.Last() == author)
+                        {
+                            <span>@author.FullName</span>
+                        }
+                        else
+                        {
+                            <span>@author.FullName - </span>
+                        }
+                    }
+                </p>
+                <p>
+                    Genres :
+                    @foreach (var genre in book.Genres)
+                    {
+                        if (book.Genres.Last() == genre)
+                        {
+                            <span>@genre.Name</span>
+                        }
+                        else
+                        {
+                            <span>@genre.Name - </span>
+                        }
+                    }
+                </p>
+                <div class="container-btn">
+                    <a class="btn btn-info" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Delete</a>
+                </div>
+            </div>
         </div>
     }
 </div>
