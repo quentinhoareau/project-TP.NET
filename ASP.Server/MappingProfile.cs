@@ -16,6 +16,7 @@ namespace ASP.Server
             // https://docs.automapper.org/en/latest/
             CreateMap<Book, BookDto>();
             CreateMap<Genre, GenreDto>();
+            CreateMap<Author, AuthorDto>();
         }
     }
 }

@@ -63,21 +63,27 @@ namespace ASP.Server.Api
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
         
         
-        [HttpGet("api/books")]
-        public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        [HttpGet("/api/book")]
+        public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] List<int> genre, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
         {
             IQueryable<Book> query = libraryDbContext.Books;
 
-            if (genreIds != null && genreIds.Count > 0)
+            if (genre != null && genre.Count > 0)
             {
-                query = query.Where(b => b.Genres.Any(g => genreIds.Contains(g.Id)));
+                query = query.Where(b => b.Genres.Any(g => genre.Contains(g.Id)));
             }
+
+            var totalBooks = await query.CountAsync(); // Obtenez le nombre total de livres sans pagination
 
             var books = await query
                 .Skip(offset)
                 .Take(limit)
                 .ProjectTo<BookDto>(mapper.ConfigurationProvider)
                 .ToListAsync();
+
+            var paginationHeader = $"{offset + 1}-{offset + books.Count}/{totalBooks}";
+
+            Response.Headers.Add("Pagination", paginationHeader);
 
             return Ok(books);
         }

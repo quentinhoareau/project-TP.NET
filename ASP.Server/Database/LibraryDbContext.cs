@@ -14,16 +14,7 @@ namespace ASP.Server.Database
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Genre> Genre { get; set; }
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<Book>()
-                .HasMany(b => b.Genres)
-                .WithMany(g => g.Books)
-                .UsingEntity(j => j.ToTable("BookGenres"));
-        }
+        public DbSet<Author> Authors { get; set; }
         
     }
 }

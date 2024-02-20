@@ -17,6 +17,18 @@ namespace ASP.Server.Database
                 return; // La base de données a déjà été initialisée.
 
             // Création des genres
+            Author SB, JRR, EC, JK, SK;
+            bookDbContext.Authors.AddRange(
+                SB = new Author() { FirstName = "Stendhal", LastName = "Beyle" },
+                JRR = new Author() { FirstName = "J.R.R.", LastName = "Tolkien" },
+                EC =new Author() { FirstName = "Eoin", LastName = "Colfer" },
+                JK =new Author() { FirstName = "J.K.", LastName = "Rowling" },
+                SK =new Author() { FirstName = "Stephen", LastName = "King" }
+            );
+            bookDbContext.SaveChanges(); // Sauvegarde pour obtenir des ID pour les genres
+            
+            
+            // Création des auteurs
             Genre SF, Classic, Romance, Thriller, Fantasy;
             bookDbContext.Genre.AddRange(
                 SF = new Genre() { Name = "Science Fiction" },
@@ -31,31 +43,31 @@ namespace ASP.Server.Database
             bookDbContext.Books.AddRange(
                 new Book() {
                     Name = "Le rouge et le noir",
-                    Author = "Stendhal",
+                    Authors = new List<Author>() { SB },
                     Price = 10.99m,
                     Content = "Julien Sorel, jeune homme ambitieux, est engagé comme précepteur chez le maire de Verrières, M. de Rênal. Il séduit la femme de son employeur, puis la fille de celui-ci, Mathilde.",
-                    Genres = new List<Genre>() { Classic } // Assignation du genre Classic
+                    Genres = new List<Genre>() { Classic },
                 },
                 new Book() {
                     Name = "Le seigneur des anneaux",
-                    Author = "J.R.R. Tolkien",
+                    Authors = new List<Author>() { JRR },
                     Price = 15.99m,
                     Content = "Un anneau pour les gouverner tous, un anneau pour les trouver, un anneau pour les amener tous et dans les ténèbres les lier",
-                    Genres = new List<Genre>() { SF } // Assignation du genre Science Fiction
+                    Genres = new List<Genre>() { SF } 
                 },
                 new Book() {
                     Name = "Artémis Fowl",
-                    Author = "Eoin Colfer",
+                    Authors = new List<Author>() { EC, SB },
                     Price = 12.99m,
                     Content = "Artémis Fowl est un génie de douze ans, un peu garçon, un peu adulte, et surtout... un peu voleur. Il a découvert l'existence des fées et compte bien s'en servir pour s'enrichir.",
-                    Genres = new List<Genre>() { SF, Thriller } // Assignation des genres Science Fiction et Thriller
+                    Genres = new List<Genre>() { SF, Thriller } 
                 },
                 new Book() {
                     Name = "Harry Potter",
-                    Author = "J.K. Rowling",
+                    Authors = new List<Author>() { SK },
                     Price = 14.99m,
                     Content = "Harry Potter est un jeune orphelin qui découvre à l'âge de onze ans qu'il est un sorcier. Il est invité à étudier la magie à Poudlard, une école de sorcellerie.",
-                    Genres = new List<Genre>() { Fantasy } // Supposant que vous avez un genre Fantasy
+                    Genres = new List<Genre>() { Fantasy } 
                 }
             );
             bookDbContext.SaveChanges(); // Sauvegarde finale avec les relations mises à jour
