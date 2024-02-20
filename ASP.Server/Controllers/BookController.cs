@@ -29,7 +29,7 @@ namespace ASP.Server.Controllers
             if (ModelState.IsValid)
             {
                 // Completer la création du livre avec toute les information nécéssaire que vous aurez ajoutez, et metter la liste des gener récupéré de la base aussi
-                libraryDbContext.Add(new Book() { });
+                libraryDbContext.Add(new Book() {  });
                 libraryDbContext.SaveChanges();
             }
 

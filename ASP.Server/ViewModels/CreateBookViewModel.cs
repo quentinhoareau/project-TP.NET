@@ -9,7 +9,7 @@ namespace ASP.Server.ViewModels
     // -> /api/1.0.0/xxx?prop1=123&prop2=azerty&prop3[]=0&prop3[]=1
     public class CreateBookViewModel
     {
-        [Required (ErrorMessage = "You need to add a title to the book.")]
+        [Required]
         public String Name { get; set; }
 
         // Ajouter ici tous les champ que l'utilisateur devra remplir pour ajouter un livre
@@ -20,11 +20,5 @@ namespace ASP.Server.ViewModels
 
         // Liste des genres a afficher à l'utilisateur
         public IEnumerable<Genre> AllGenres { get; init; }
-        
-        [Required (ErrorMessage = "You need to add a content to the book.")]
-        public String Content { get; set; }
-        
-        [Required (ErrorMessage = "You need to add a author to the book.")]
-        public String Author { get; set; }
     }
 }

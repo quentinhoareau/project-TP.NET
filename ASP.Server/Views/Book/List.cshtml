@@ -4,28 +4,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    .book .title{
-        display: flex;
-        justify-content: space-between;
-    }
-</style>
-
 <div class="listeBooks">
     <h1>Liste des livres:</h1>
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
     @foreach (var book in Model)
     {
-        <div class="book">
-            <div class="title">
-                <H2>@book.Name</H2>
-                <p>@book.Price$</p>
-            </div>
-            <p>@book.Content</p>
-            <p>@book.Author</p>
-            <a asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
-            <a asp-controller="Book" asp-action="Details" asp-route-id="@book.Id">Details</a>
-        </div>
     }
 </div>
 

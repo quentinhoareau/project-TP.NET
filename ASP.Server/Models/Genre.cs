@@ -8,11 +8,14 @@ namespace ASP.Server.Models
     public class Genre
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         [Key]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        // Mettez ici les propriété de votre livre: Nom et Livres associés
 
-        public virtual ICollection<Book> Books { get; set; } = new List<Book>();
+        // N'oublier pas qu'un genre peut avoir plusieur livres
     }
+
 }
+

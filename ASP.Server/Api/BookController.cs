@@ -61,41 +61,13 @@ namespace ASP.Server.Api
         //      this.mapper.Map<List<ItemDto>>(my_array);
 
         // Je vous montre comment faire la 1er, a vous de la compléter et de faire les autres !
-        
-        
-        [HttpGet("api/books")]
-        public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks([FromQuery] List<int> genreIds, [FromQuery] int limit = 10, [FromQuery] int offset = 0)
+        public ActionResult<IEnumerable<BookDto>> GetBooks()
         {
-            IQueryable<Book> query = libraryDbContext.Books;
-
-            if (genreIds != null && genreIds.Count > 0)
-            {
-                query = query.Where(b => b.Genres.Any(g => genreIds.Contains(g.Id)));
-            }
-
-            var books = await query
-                .Skip(offset)
-                .Take(limit)
-                .ProjectTo<BookDto>(mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            return Ok(books);
-        }
-        
-        [HttpGet("/api/book/{id}")]
-        public async Task<ActionResult<BookDto>> GetBookById(int id)
-        {
-            var book = await libraryDbContext.Books
-                .Where(b => b.Id == id)
-                .ProjectTo<BookDto>(mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync();
-
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(book);
+            // Exemple sans dependence externe
+            // return libraryDbContext.Books.Select(b => new BookDto { Id = b.Id });
+            // Exemple avec AutoMapper
+            // return mapper.Map<List<BookDto>>(libraryDbContext.Books);
+            throw new NotImplementedException("You have to do it your self");
         }
 
     }
