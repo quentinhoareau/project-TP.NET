@@ -3,20 +3,48 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:MAUI.Reader.Pages"
              xmlns:vm="clr-namespace:MAUI.Reader.ViewModel"
-             xmlns:model="clr-namespace:MAUI.Reader.Model"
              d:DataContext="vm:ListBook"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800"
-             x:DataType="vm:ListBooks">
+             d:DesignWidth="800">
     <ContentPage.BindingContext>
         <vm:ListBooks />
     </ContentPage.BindingContext>
     <ScrollView>
         <VerticalStackLayout Padding="30,0"
                              Spacing="25">
+             <ListView ItemsSource="{Binding Books}" SelectedItem="{Binding SelectedBook}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout>
+                                <Label Text="{Binding Name}" 
+                                       FontSize="18" 
+                                       Style="{StaticResource Headline}"
+                                       SemanticProperties.HeadingLevel="Level1"
+                                       />
+                                <Label Text="{Binding Price}" 
+                                       FontSize="16" 
+                                       Style="{StaticResource Headline}"
+                                       SemanticProperties.HeadingLevel="Level2"
+                                       />
+                                <Label Text="{Binding Content}" 
+                                       FontSize="16" 
+                                       Style="{StaticResource Headline}"
+                                       SemanticProperties.HeadingLevel="Level4"
+                                       />
+                                <Button x:Name="CounterBtn"
+                                        Text="View Detail"
+                                        SemanticProperties.Hint="Click to view the details of the book"
+                                        HorizontalOptions="Fill">
+                                </Button>
+                                <!-- Ajoutez d'autres labels pour les autres propriétés du livre -->
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
             <!-- 
             A vous de créer la liste avec le bon binding. Une <ListBox> fera l'affaire 
@@ -35,28 +63,6 @@
             https://stackoverflow.com/questions/76681900/binding-contextactions-menuitem-with-communitytoolkit-mvvm-in-maui
             
             -->
-
-            <!-- Supprimer tous ta parti suivante qui est juste la pour vous monter ce qu'on peut faire -->
-            <Image Source="dotnet_bot.png"
-                   HeightRequest="185"
-                   Aspect="AspectFit"
-                   SemanticProperties.Description="dot net bot in a race car number eight" />
-
-            <Label Text="Hello, World!"
-                   Style="{StaticResource Headline}"
-                   SemanticProperties.HeadingLevel="Level1" />
-
-            <Label Text="Welcome to &#10;.NET Multi-platform App UI"
-                   Style="{StaticResource SubHeadline}"
-                   SemanticProperties.HeadingLevel="Level2"
-                   SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
-
-            <Button x:Name="CounterBtn"
-                    Text="{Binding Count}"
-                    SemanticProperties.Hint="Counts the number of times you click"
-                    Command="{Binding CounterClickedCommand}"
-                    HorizontalOptions="Fill">
-            </Button>
         </VerticalStackLayout>
     </ScrollView>
 
