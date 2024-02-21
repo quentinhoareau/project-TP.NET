@@ -1,5 +1,5 @@
-﻿@using ASP.Server.Models
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ASP.Server.Service
 @model ASP.Server.ViewModels.FilterBookViewModel
 
 <style>
@@ -96,6 +96,25 @@
                         }
                     }
                 </p>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Taille du mot le plus long</th>
+                        <th scope="col">Taille du mot le plus petit</th>
+                        <th scope="col">Taille median des mots</th>
+                        <th scope="col">Taille moyenne des mots</th>
+                    </tr>
+                    </thead>
+                    @{
+                        var stats = LibraryService.GetStatsOfBookById(book);
+                        <tr>
+                            <td>@stats.MaxWords</td>
+                            <td>@stats.MinWords</td>
+                            <td>@stats.MedWords</td>
+                            <td>@stats.AvgWords</td>
+                        </tr>
+                    }
+                </table>
                 <div class="container-btn">
                     <a class="btn btn-info" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
                     <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Delete</a>

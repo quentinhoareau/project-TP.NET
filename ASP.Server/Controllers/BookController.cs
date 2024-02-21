@@ -36,42 +36,22 @@ namespace ASP.Server.Controllers
                 listBooks = listBooks.OrderBy(p => p.Genres.Select(g => g.Name).FirstOrDefault()).ToList();
                 ViewBag.FilterOptions = libraryDbContext.Genres;
             }
+            
             return View(new FilterBookViewModel()
             {
                 Books = listBooks,
+                NbBooks = GetBookCount(),
             });
         }
         
-        public ActionResult<int> GetBookCount()
+        public int GetBookCount()
         {
             return libraryDbContext.Books.Count();
         }
         
-        public ActionResult<int> GetBookCountByAuthor(int authorId)
+        public int GetBookCountByAuthor(int authorId)
         {
             return libraryDbContext.Books.Where(p => p.Authors.Any(a => a.Id == authorId)).Count();
-        }
-        
-        public ActionResult<object> GetStatsOfBookById(int bookId)
-        {
-            int maxWords = 0;
-            int minWords = 0;
-            double avgWords = 0;
-            int averageWords;
-            var book = libraryDbContext.Books.Find(bookId);
-            if (book != null)
-            {
-                var words = book.Content.Split(' ');
-                maxWords = words.Max(p => p.Length);
-                minWords = words.Min(p => p.Length);
-                avgWords = words.Average(p => p.Length);
-            }
-            return new
-            {
-                MaxWords = maxWords,
-                MinWords = minWords,
-                AvgWords = avgWords
-            };
         }
         
         public ActionResult<IEnumerable<Book>> Index(string filterBy)
