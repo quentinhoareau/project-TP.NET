@@ -74,7 +74,7 @@
 
             <!-- Bouton Lire le livre -->
             <Button Text="Lire le livre"
-                    Command="{Binding ReadBookCommand}"
+                    Command="{Binding ReadBook2Command}"
                     Grid.Row="8"
                     Margin="0,30,0,0"
                     FontSize="Small"
