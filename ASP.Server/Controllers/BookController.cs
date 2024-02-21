@@ -19,13 +19,12 @@ namespace ASP.Server.Controllers
     {
         private readonly LibraryDbContext libraryDbContext = libraryDbContext;
 
-        public ActionResult<IEnumerable<Book>> List()
+        public ActionResult<IEnumerable<Book>> List([FromQuery] string filterBy = "author")
         {
             // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
-            IEnumerable<Book> ListBooks = libraryDbContext.Books.
-                Include(p => p.Genres)
+            var listBooks = libraryDbContext.Books
+                .Include(p => p.Genres)
                 .Include(a => a.Authors).ToList();
-            return View(ListBooks);
             ViewBag.FilterBy = filterBy;
             if (filterBy == "author")
             {
@@ -83,7 +82,11 @@ namespace ASP.Server.Controllers
         public ActionResult<CreateBookViewModel> Create(CreateBookViewModel book)
         {
             // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
-            return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genres, AllAuthors = libraryDbContext.Authors});
+            return View(new CreateBookViewModel()
+            {
+                AllGenres = libraryDbContext.Genres, 
+                AllAuthors = libraryDbContext.Authors
+            });
         }
 
         public ActionResult<CreateBookViewModel> Insert(CreateBookViewModel book)

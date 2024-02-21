@@ -29,7 +29,7 @@ namespace ASP.Server.ViewModels
         public IEnumerable<Author> AllAuthors { get; init; }
         
         [Required (ErrorMessage = "You need to add a price to the book.")]
-        public Decimal Price { get; set; }
+        public Double Price { get; set; }
         
     }
 }

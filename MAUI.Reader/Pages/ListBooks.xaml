@@ -29,35 +29,21 @@
                                        Style="{StaticResource Headline}"
                                        SemanticProperties.HeadingLevel="Level2"
                                        />
-                                <Button x:Name="CounterBtn"
-                                        Text="View Detail"
-                                        SemanticProperties.Hint="Click to view the details of the book"
-                                        HorizontalOptions="Fill">
-                                </Button>
+                                <Label Text="{Binding Content}" 
+                                       FontSize="16" 
+                                       Style="{StaticResource Headline}"
+                                       SemanticProperties.HeadingLevel="Level4"
+                                       />
+                                <Button Text="Voir les détails" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListBooks}}, Path=ItemSelectedCommand}" CommandParameter="{Binding .}" />
                                 <!-- Ajoutez d'autres labels pour les autres propriétés du livre -->
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            
+            
 
-            <!-- 
-            A vous de créer la liste avec le bon binding. Une <ListBox> fera l'affaire 
-            La propriété ItemsSource doit pointé vers la propiété Books de votre dataContext actuelle 
-            Utilisé ListBox.ItemTemplate pour définir comment sont affiché vos items
-            <ListBox.ItemTemplate>
-        
-            A vous de faire afficher les champs que vous voulez afficher pour savoir quel sont les livre disponible
-            <TextBlock Text="{Binding MyPropertyOnMyObjectBook}"/>
-            N'oublier pas non plus de rajouter un boutton quelque part pour allez voir les détails de votre livre
-            Les propriété Command et CommandParameter pourrons vous aider ! 
-            Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" 
-            CommandParameter="{Binding .}"
-            
-            Du à un Bug dans le toolkit suivez les info indiqué ici:
-            https://stackoverflow.com/questions/76681900/binding-contextactions-menuitem-with-communitytoolkit-mvvm-in-maui
-            
-            -->
         </VerticalStackLayout>
     </ScrollView>
 

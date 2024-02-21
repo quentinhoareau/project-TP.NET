@@ -16,12 +16,12 @@ namespace ASP.Server.Models
         
         public string Name { get; set; }
 
-        public virtual ICollection<Author> Authors { get; set; } = new List<Author>();
+        public ICollection<Author> Authors { get; set; }
 
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public string Content { get; set; }
 
-        public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
+        public ICollection<Genre> Genres { get; set; }
     }
 }
