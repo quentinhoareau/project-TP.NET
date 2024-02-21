@@ -6,13 +6,8 @@ using AutoMapper;
 
 namespace ASP.Server.Dtos
 {
-    public class BookDto
+    public class BookDto : BookWithoutContentDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<AuthorDto> Authors { get; set; }
-        public decimal Price { get; set; }
         public string Content { get; set; }
-        public ICollection<GenreDto> Genres { get; set; }
     }
 }

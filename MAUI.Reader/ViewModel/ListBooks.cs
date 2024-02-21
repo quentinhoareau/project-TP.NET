@@ -6,34 +6,34 @@ using MAUI.Reader.Model;
 using MAUI.Reader.Service;
 using System.Windows.Input;
 
-using CommunityToolkit.Maui.Alerts;
-
 namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
+        public ICommand ItemSelectedCommand { get; }
+        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
+        private Book _selectedBook;
+        
         public ListBooks()
         {
-            ItemSelectedCommand = new Command(OnItemSelectedCommand);
+            LoadBooks();
+            ItemSelectedCommand = new Command<Book>(ShowDetails);
         }
-        public ICommand ItemSelectedCommand { get; private set; }
-        public void OnItemSelectedCommand(object book)
+    
+        private async void LoadBooks()
         {
+            var books = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks();
+            foreach (var book in books)
+            {
+                Books.Add(book);
+            }
         }
-
-
-        // n'oublier pas faire de faire le binding dans ListBook.xaml !!!!
-        public ObservableCollection<Book> Books => Ioc.Default.GetRequiredService<LibraryService>().Books;
-
-
-        public int Count { get; set; }
 
         [RelayCommand]
-        public void CounterClicked()
+        public void ShowDetails(Book book)
         {
-            Count++;
-
-            Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(new Book());
+            //TODO : Replace Books[0] by the "book" parameter
+            Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
         }
     }
 }

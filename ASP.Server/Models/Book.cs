@@ -18,7 +18,7 @@ namespace ASP.Server.Models
 
         public ICollection<Author> Authors { get; set; }
 
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public string Content { get; set; }
 

@@ -1,7 +1,11 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using MAUI.Reader.Model;
+using MAUI.Reader.Service;
 
 namespace MAUI.Reader.ViewModel
 {
@@ -21,11 +25,12 @@ namespace MAUI.Reader.ViewModel
 
         // n'oublier pas faire de faire le binding dans DetailsBook.xaml !!!!
         public Book CurrentBook { get; init; } = book;
+        
     }
 
     /* Cette classe sert juste a afficher des donnée de test dans le designer */
     public class InDesignDetailsBook : DetailsBook
     {
-        public InDesignDetailsBook() : base(new Book() /*{ Title = "Test Book" }*/) { }
+        public InDesignDetailsBook() : base(new Book()) { }
     }
 }

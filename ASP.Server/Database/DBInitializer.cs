@@ -44,30 +44,30 @@ namespace ASP.Server.Database
                 new Book() {
                     Name = "Le rouge et le noir",
                     Authors = new List<Author>() { SB },
-                    Price = 10.99m,
+                    Price = 10.99,
                     Content = "Julien Sorel, jeune homme ambitieux, est engagé comme précepteur chez le maire de Verrières, M. de Rênal. Il séduit la femme de son employeur, puis la fille de celui-ci, Mathilde.",
                     Genres = new List<Genre>() { SF },
                 },
                 new Book() {
                     Name = "Le seigneur des anneaux",
                     Authors = new List<Author>() { JRR },
-                    Price = 15.99m,
+                    Price = 15.99,
                     Content = "Un anneau pour les gouverner tous, un anneau pour les trouver, un anneau pour les amener tous et dans les ténèbres les lier",
                     Genres = new List<Genre>() { SF } 
                 },
                 new Book() {
                     Name = "Artémis Fowl",
                     Authors = new List<Author>() { EC, SB },
-                    Price = 12.99m,
+                    Price = 12.99,
                     Content = "Artémis Fowl est un génie de douze ans, un peu garçon, un peu adulte, et surtout... un peu voleur. Il a découvert l'existence des fées et compte bien s'en servir pour s'enrichir.",
                     Genres = new List<Genre>() { SF, Thriller } 
                 },
                 new Book() {
                     Name = "Harry Potter",
                     Authors = new List<Author>() { SK },
-                    Price = 14.99m,
+                    Price = 14.99,
                     Content = "Harry Potter est un jeune orphelin qui découvre à l'âge de onze ans qu'il est un sorcier. Il est invité à étudier la magie à Poudlard, une école de sorcellerie.",
-                    Genres = new List<Genre>() { Fantasy } 
+                    Genres = new List<Genre>() { Fantasy, Classic },
                 }
             );
             bookDbContext.SaveChanges(); // Sauvegarde finale avec les relations mises à jour
