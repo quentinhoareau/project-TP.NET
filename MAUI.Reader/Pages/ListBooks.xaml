@@ -14,7 +14,7 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0"
                              Spacing="25">
-             <ListView ItemsSource="{Binding Books}">
+             <ListView ItemsSource="{Binding Books}" SelectedItem="{Binding SelectedBook}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

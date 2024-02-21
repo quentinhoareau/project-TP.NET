@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices.JavaScript;
 using ASP.Server.Models;
 using ASP.Server.ViewModels;
+using AutoMapper.QueryableExtensions;
 using AutoMapper;
+using Microsoft.OpenApi.Any;
 
 namespace ASP.Server.Controllers
 {
@@ -34,6 +40,38 @@ namespace ASP.Server.Controllers
             {
                 Books = listBooks,
             });
+        }
+        
+        public ActionResult<int> GetBookCount()
+        {
+            return libraryDbContext.Books.Count();
+        }
+        
+        public ActionResult<int> GetBookCountByAuthor(int authorId)
+        {
+            return libraryDbContext.Books.Where(p => p.Authors.Any(a => a.Id == authorId)).Count();
+        }
+        
+        public ActionResult<object> GetStatsOfBookById(int bookId)
+        {
+            int maxWords = 0;
+            int minWords = 0;
+            double avgWords = 0;
+            int averageWords;
+            var book = libraryDbContext.Books.Find(bookId);
+            if (book != null)
+            {
+                var words = book.Content.Split(' ');
+                maxWords = words.Max(p => p.Length);
+                minWords = words.Min(p => p.Length);
+                avgWords = words.Average(p => p.Length);
+            }
+            return new
+            {
+                MaxWords = maxWords,
+                MinWords = minWords,
+                AvgWords = avgWords
+            };
         }
         
         public ActionResult<IEnumerable<Book>> Index(string filterBy)
