@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MAUI.Reader.Model
 {
-    public class Genre
+    public class Genre: ObservableObject
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public int Id { get; set; }
-
         public string Name { get; set; }
-
         public virtual ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }
