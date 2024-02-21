@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ASP.Server.Models;
 using ASP.Server.ViewModels;
-using AutoMapper.QueryableExtensions;
 using AutoMapper;
 
 namespace ASP.Server.Controllers
@@ -16,19 +13,42 @@ namespace ASP.Server.Controllers
     {
         private readonly LibraryDbContext libraryDbContext = libraryDbContext;
 
-        public ActionResult<IEnumerable<Book>> List()
+        public ActionResult<IEnumerable<Book>> List([FromQuery] string filterBy = "author")
         {
             // récupérer les livres dans la base de donées pour qu'elle puisse être affiché
-            IEnumerable<Book> ListBooks = libraryDbContext.Books.
-                Include(p => p.Genres)
+            var listBooks = libraryDbContext.Books
+                .Include(p => p.Genres)
                 .Include(a => a.Authors).ToList();
-            return View(ListBooks);
+            ViewBag.FilterBy = filterBy;
+            if (filterBy == "author")
+            {
+                listBooks = listBooks.OrderBy(p => p.Authors.Select(a => a.FullName).FirstOrDefault()).ToList();
+                ViewBag.FilterOptions = libraryDbContext.Authors;
+            }
+            else if (filterBy == "genre")
+            {
+                listBooks = listBooks.OrderBy(p => p.Genres.Select(g => g.Name).FirstOrDefault()).ToList();
+                ViewBag.FilterOptions = libraryDbContext.Genres;
+            }
+            return View(new FilterBookViewModel()
+            {
+                Books = listBooks,
+            });
+        }
+        
+        public ActionResult<IEnumerable<Book>> Index(string filterBy)
+        {
+            return RedirectToAction("List", new { filterBy=filterBy});
         }
 
         public ActionResult<CreateBookViewModel> Create(CreateBookViewModel book)
         {
             // Il faut interoger la base pour récupérer tous les genres, pour que l'utilisateur puisse les slécétionné
-            return View(new CreateBookViewModel() { AllGenres = libraryDbContext.Genres, AllAuthors = libraryDbContext.Authors});
+            return View(new CreateBookViewModel()
+            {
+                AllGenres = libraryDbContext.Genres, 
+                AllAuthors = libraryDbContext.Authors
+            });
         }
 
         public ActionResult<CreateBookViewModel> Insert(CreateBookViewModel book)
@@ -74,14 +94,14 @@ namespace ASP.Server.Controllers
         
         public ActionResult<EditBookViewModel> Update(EditBookViewModel book)
         {
-            var bookToUpdate = libraryDbContext.Books.Include(p => p.Genres).FirstOrDefault(p => p.Id == book.Id);
+            var bookToUpdate = libraryDbContext.Books
+                .Include(p => p.Genres).Include(p => p.Authors).FirstOrDefault(p => p.Id == book.Id);
             if (bookToUpdate == null)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                bookToUpdate.Id = book.Id;
                 bookToUpdate.Name = book.Name;
                 bookToUpdate.Content = book.Content;
                 bookToUpdate.Authors = libraryDbContext.Authors.Where(p => book.Authors.Contains(p.Id)).ToList();

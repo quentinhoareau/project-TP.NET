@@ -46,7 +46,7 @@ namespace ASP.Server.Database
                     Authors = new List<Author>() { SB },
                     Price = 10.99m,
                     Content = "Julien Sorel, jeune homme ambitieux, est engagé comme précepteur chez le maire de Verrières, M. de Rênal. Il séduit la femme de son employeur, puis la fille de celui-ci, Mathilde.",
-                    Genres = new List<Genre>() { Classic },
+                    Genres = new List<Genre>() { SF },
                 },
                 new Book() {
                     Name = "Le seigneur des anneaux",
