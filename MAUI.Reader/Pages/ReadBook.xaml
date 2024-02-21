@@ -23,30 +23,25 @@
                    SemanticProperties.HeadingLevel="Level1"
                    >
             </Label>
-
-            <Label Text="{Binding ReceivedBook.Content}"
-                   FontSize="16">
-            </Label>
+            
+            <Entry Text="{Binding ReceivedBook.Content}"
+                   FontSize="16"
+                   IsReadOnly="True">
+                <Entry.GestureRecognizers>
+                    <TapGestureRecognizer />
+                </Entry.GestureRecognizers>
+            </Entry>
             <HorizontalStackLayout
                 Padding="30,0"
                 Spacing="25"
                 Margin="20"
             >
-                <Button Text="Read"
-                        Command="{Binding ReadCommand}"
+                <Button Text="{Binding Controller}"
+                        Command="{Binding PauseOrResumeOrReadCommand }"
                         Grid.Row="8"
                         Margin="0,30,0,0"
                         FontSize="Small"
                         BackgroundColor="#0EBA54"
-                        TextColor="White"
-                        Padding="10"
-                        CornerRadius="5"/>
-                <Button Text="Pause"
-                        Command="{Binding PauseCommand}"
-                        Grid.Row="8"
-                        Margin="0,30,0,0"
-                        FontSize="Small"
-                        BackgroundColor="#2C6ACB"
                         TextColor="White"
                         Padding="10"
                         CornerRadius="5"/>
