@@ -10,14 +10,16 @@ namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
-        public ListBooks()
-        {
-            ItemSelectedCommand = new Command(OnItemSelectedCommand);
-            LoadBooks();
-        }
-        public ICommand ItemSelectedCommand { get; private set; }
+        public ICommand ItemSelectedCommand { get; }
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
         private Book _selectedBook;
+        
+        public ListBooks()
+        {
+            LoadBooks();
+            ItemSelectedCommand = new Command<Book>(ShowDetails);
+        }
+    
         private async void LoadBooks()
         {
             var books = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks();
@@ -26,38 +28,12 @@ namespace MAUI.Reader.ViewModel
                 Books.Add(book);
             }
         }
-        
-        public Book SelectedBook
-        {
-            get => _selectedBook;
-            set
-            {
-                if (_selectedBook != value)
-                {
-                    _selectedBook = value;
-                    OnPropertyChanged(nameof(SelectedBook));
-                }
-            }
-        }
-        public void OnItemSelectedCommand(object book)
-        {
-            Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(SelectedBook);
-        }
-
-        // n'oublier pas faire de faire le binding dans ListBook.xaml !!!!
-
-    
 
         [RelayCommand]
-        public void CounterClicked()
+        public void ShowDetails(Book book)
         {
-
-            Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(new Book());
-        }
-        public void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            // Mettez à jour la propriété SelectedBook lorsque la sélection change
-            SelectedBook = e.SelectedItem as Book;
+            //TODO : Replace Books[0] by the "book" parameter
+            Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
         }
     }
 }
