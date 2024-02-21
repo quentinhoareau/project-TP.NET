@@ -29,11 +29,6 @@
                                        Style="{StaticResource Headline}"
                                        SemanticProperties.HeadingLevel="Level2"
                                        />
-                                <Label Text="{Binding Content}" 
-                                       FontSize="16" 
-                                       Style="{StaticResource Headline}"
-                                       SemanticProperties.HeadingLevel="Level4"
-                                       />
                                 <Button x:Name="CounterBtn"
                                         Text="View Detail"
                                         SemanticProperties.Hint="Click to view the details of the book"

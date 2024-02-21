@@ -36,5 +36,17 @@ namespace MAUI.Reader.Service
             Console.Write(content);
             return Mapper.Mapper.ToBooks(content);
         }
+
+        public async Task<Book> GetBookById(int id)
+        {
+            var response = await _restClient._get(Constants.BookTopic + $"/{id}");
+            if (response == null)
+            {
+                return new Book();
+            }
+
+            return Mapper.Mapper.ToBook(await response.ReadAsStringAsync());
+            
+        }
     }
 }
