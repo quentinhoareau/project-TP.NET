@@ -1,5 +1,3 @@
-using System;
-
 namespace ASP.Server.ViewModels
 {
     public class ErrorViewModel

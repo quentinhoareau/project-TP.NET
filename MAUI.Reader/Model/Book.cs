@@ -14,5 +14,7 @@ namespace MAUI.Reader.Model
         public double Price { get; set; }
         public ICollection<Genre> Genres { get; set; } = new List<Genre>();
         public ICollection<Author> Authors { get; set; } = new List<Author>();
+        public String EuroPrice => $"{Price} euros";
+        public String ReadLabel => $"Lire le livre pour {EuroPrice}";
     }
 }

@@ -6,6 +6,14 @@ namespace MAUI.Reader.Service
 {
     public class LibraryService
     {
+        
+        public class BooksPaginate
+        {
+            public List<Book> Books { get; set; }
+            public int TotalBooks { get; set; }
+        }
+        
+        
         private readonly RestClient _restClient = new RestClient();
   
         // C'est aussi ici que vous ajouterez les requête réseau pour récupérer les livres depuis le web service que vous avez fait
@@ -16,16 +24,33 @@ namespace MAUI.Reader.Service
             
         }
 
-        public async Task<List<Book>> GetAllBooks ()
+        public async Task<BooksPaginate> GetAllBooks (int limit = 10, int offset = 0)
         {
-            var response = await _restClient._get(Constants.BookTopic);
+            HttpContent response  = await _restClient._get(Constants.BookTopic+"?limit="+limit+"&offset="+offset);
             if (response == null)
             {
                 new List<Book>();
             }
             string content = await response.ReadAsStringAsync();
             Console.Write(content);
-            return Mapper.Mapper.ToBooks(content);
+            
+            IEnumerable<string> values;
+            var totalBooks = 0;
+            
+            if (response.Headers.TryGetValues("Pagination", out values))
+            {
+                var paginationHeader = values.First();
+                var parts = paginationHeader.Split('/');
+                totalBooks = int.Parse(parts[1]) ;
+            }
+            
+            
+            return new BooksPaginate()
+            {
+                Books = Mapper.Mapper.ToBooks(content),
+                TotalBooks = totalBooks
+            };
+            
         }
 
         public async Task<Book> GetBookById(int id)

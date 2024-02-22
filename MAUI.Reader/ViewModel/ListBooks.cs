@@ -10,30 +10,65 @@ namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
-        public ICommand ItemSelectedCommand { get; }
+        public ICommand NextPageCommand { get;  }
+        public ICommand PreviousPageCommand { get;  }
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
-        private Book _selectedBook;
-        
+        private int _currentPageIndex = 0;
+        private readonly int _itemsPerPage = 6;
+        private int _totalBooks = 0;
+
         public ListBooks()
         {
-            LoadBooks();
-            ItemSelectedCommand = new Command<Book>(ShowDetails);
+            NextPageCommand = new RelayCommand(NextPage, () => {
+                return _totalBooks > (_currentPageIndex + 1) * _itemsPerPage;
+            });
+            PreviousPageCommand = new RelayCommand(PreviousPage, () => {
+                return _currentPageIndex > 0;
+            });
+             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
         }
-    
-        private async void LoadBooks()
+
+        private async void LoadBooks(int limit, int offset)
         {
-            var books = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks();
-            foreach (var book in books)
+            LibraryService.BooksPaginate booksPaginate = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks(limit, offset);
+            _totalBooks = booksPaginate.TotalBooks;
+            UpdatePagesButton();
+            Books.Clear();
+            foreach (var book in booksPaginate.Books)
             {
                 Books.Add(book);
             }
         }
 
+        public void UpdatePagesButton()
+        {
+            (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        }
+
         [RelayCommand]
         public void ShowDetails(Book book)
         {
-            //TODO : Replace Books[0] by the "book" parameter
             Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
+        }
+
+        private void NextPage()
+        {
+            _currentPageIndex++;
+            LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
+            UpdatePagesButton();
+        }
+
+        private void PreviousPage()
+        {
+            _currentPageIndex--;
+            LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
+            UpdatePagesButton();
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
