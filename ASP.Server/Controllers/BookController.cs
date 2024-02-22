@@ -2,19 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ASP.Server.Database;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Net.Http;
-using System.Runtime.InteropServices.JavaScript;
-using System.Threading.Tasks;
 using ASP.Server.Models;
 using ASP.Server.Service;
 using ASP.Server.ViewModels;
-using AutoMapper.QueryableExtensions;
 using AutoMapper;
-using Microsoft.OpenApi.Any;
 
 namespace ASP.Server.Controllers
 {

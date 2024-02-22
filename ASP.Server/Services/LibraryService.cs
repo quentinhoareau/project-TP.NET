@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using ASP.Server.Database;
 using ASP.Server.Models;
-using AutoMapper;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ASP.Server.Service
 {
