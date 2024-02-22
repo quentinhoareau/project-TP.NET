@@ -19,6 +19,12 @@
         }
     }
     
+    .container{
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    
     .container-btn{
         display: flex;
         justify-content: end;
@@ -34,29 +40,45 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        
+        p {
+            margin: 0;
+        }
     }
 </style>
 
 <div class="listBooks">
     <div class="title">
         <h1>Liste des livres:</h1>
-        <a class="btn btn-primary" asp-area="" asp-controller="Book" asp-action="Create">Add new book</a>
+        <div class="container-filter">
+             <a class="btn btn-primary" asp-area="" asp-controller="Book" asp-action="Create">Ajouter un nouveau livre</a>
+             <a class="btn btn-primary" asp-area="" asp-controller="Book" asp-action="CreateIsbn">Ajouter un livre par ISBN</a>
+        </div>
     </div>
     
-   
-    <form asp-action="Index" asp-controller="Book" id="parameterForm">
-        <div class="container-filter">
-            <div class="filter-section">
-                <label for="filterBy">Filtrer par:</label>
-                <select id="filterBy" name="FilterBy">
-                    <option value="author">Auteurs</option>
-                    <option value="genre">Genres</option>
-                </select>
-                <input type="hidden" name="FilterBy" id="hiddenFilterBy"/>
+    <div class="container">
+        <form asp-action="Index" asp-controller="Book" id="parameterForm">
+            <div class="container-filter">
+                <div class="filter-section">
+                    <label for="filterBy">Filtrer par:</label>
+                    <select id="filterBy" name="FilterBy">
+                        <option value="author">Auteurs</option>
+                        <option value="genre">Genres</option>
+                    </select>
+                    <input type="hidden" name="FilterBy" id="hiddenFilterBy"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Filtrer</button>
             </div>
-            <button type="submit" class="btn btn-primary">Filtrer</button>
-        </div>
-    </form>
+        </form>
+        <form asp-controller="Book" asp-action="GetBookCountByAuthor">
+            <div class="container-filter">
+                <select id="authorId" name="authorId" asp-items="@(new SelectList(Model.Authors, "Id", "FullName"))">
+                </select>
+                <button type="submit" class="btn btn-primary">Obtenir nb livre</button>
+                <p>@ViewBag.BookCountByAuthor</p>
+            </div>
+        </form>
+    </div>
    
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
     @foreach (var book in Model.Books)
@@ -116,8 +138,8 @@
                     }
                 </table>
                 <div class="container-btn">
-                    <a class="btn btn-info" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
-                    <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Delete</a>
+                    <a class="btn btn-info" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Modifier</a>
+                    <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Supprimer</a>
                 </div>
             </div>
         </div>
