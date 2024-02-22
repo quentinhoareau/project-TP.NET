@@ -1,8 +1,6 @@
-﻿@using ASP.Server.Models
-@model IEnumerable<Book>
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using ASP.Server.Service
+@model ASP.Server.ViewModels.FilterBookViewModel
 
 <style>
     
@@ -32,6 +30,11 @@
         flex-direction: column;
         gap: 15px;
     }
+    .container-filter{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 </style>
 
 <div class="listBooks">
@@ -39,8 +42,24 @@
         <h1>Liste des livres:</h1>
         <a class="btn btn-primary" asp-area="" asp-controller="Book" asp-action="Create">Add new book</a>
     </div>
+    
+   
+    <form asp-action="Index" asp-controller="Book" id="parameterForm">
+        <div class="container-filter">
+            <div class="filter-section">
+                <label for="filterBy">Filtrer par:</label>
+                <select id="filterBy" name="FilterBy">
+                    <option value="author">Auteurs</option>
+                    <option value="genre">Genres</option>
+                </select>
+                <input type="hidden" name="FilterBy" id="hiddenFilterBy"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </form>
+   
     <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
-    @foreach (var book in Model)
+    @foreach (var book in Model.Books)
     {
         <div class="book card">
             <div class="title card-header">
@@ -77,6 +96,25 @@
                         }
                     }
                 </p>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Taille du mot le plus long</th>
+                        <th scope="col">Taille du mot le plus petit</th>
+                        <th scope="col">Taille median des mots</th>
+                        <th scope="col">Taille moyenne des mots</th>
+                    </tr>
+                    </thead>
+                    @{
+                        var stats = LibraryService.GetStatsOfBookById(book);
+                        <tr>
+                            <td>@stats.MaxWords</td>
+                            <td>@stats.MinWords</td>
+                            <td>@stats.MedWords</td>
+                            <td>@stats.AvgWords</td>
+                        </tr>
+                    }
+                </table>
                 <div class="container-btn">
                     <a class="btn btn-info" asp-controller="Book" asp-action="Edit" asp-route-id="@book.Id">Edit</a>
                     <a class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Delete</a>

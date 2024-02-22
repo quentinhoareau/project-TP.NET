@@ -2,29 +2,40 @@
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using MAUI.Reader.Model;
 using MAUI.Reader.Service;
 
 namespace MAUI.Reader.ViewModel
 {
-    public partial class DetailsBook(Book book) : INotifyPropertyChanged
+    public partial class DetailsBook : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Une commande permet de recevoir des évènement de l'IHM
-        public ICommand ReadBook2Command { get; init; } = new RelayCommand<Book>(x => { /* A vous de définir la commande */ });
-
-        // Vous pouvez aussi utiliser cette forme pour définir une commande. La ligne du dessus fait strictement la même chose, choisissez une des 2 formes
-        [RelayCommand]
-        public void ReadBook(Book book)
+        public ICommand ReadBook2Command { get; }
+      
+        public DetailsBook(Book book)
         {
-            /* A vous de définir la commande */
+            CurrentBook = book;
+            LoadBookToRead(book);
+            ReadBook2Command =  new Command<Book>(ReadTheBook);
         }
 
         // n'oublier pas faire de faire le binding dans DetailsBook.xaml !!!!
-        public Book CurrentBook { get; init; } = book;
+        public Book CurrentBook { get; }
+        public Book BookToRead { get; set; }
+        public void ReadTheBook(Book book)
+        {
+            /* A vous de définir la commande */
+            Ioc.Default.GetRequiredService<INavigationService>().Navigate<ReadBook>(BookToRead);
+            
+        }
+
+        private async void LoadBookToRead(Book book)
+        {
+            BookToRead = await Ioc.Default.GetRequiredService<LibraryService>().GetBookById(book.Id);
+        }
         
     }
 
