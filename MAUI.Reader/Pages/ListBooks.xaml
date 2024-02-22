@@ -16,32 +16,53 @@
                              Spacing="25">
             
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                <Button Text="Page précédente" Command="{Binding PreviousPageCommand}" />
-                <Button Text="Page suivante" Command="{Binding NextPageCommand}" />
+              
             </StackLayout>
+            
+            <Grid Padding="0" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"  Text="Page précédente" Command="{Binding PreviousPageCommand}" />
+                <Button  Grid.Column="1"  Text="Page suivante" Command="{Binding NextPageCommand}" />
+
+            </Grid>
+            
             
             <ListView ItemsSource="{Binding Books}" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                                <Frame BackgroundColor="Teal" Padding="20" CornerRadius="10" HasShadow="True" Margin="10">
-                                    <StackLayout Margin="10">
-                                        <Label Text="{Binding Name}" 
-                                               FontSize="18" 
-                                               Style="{StaticResource Headline}"
-                                               SemanticProperties.HeadingLevel="Level1"
-                                        />
-                                        <Label Text="{Binding Price}" 
-                                               FontSize="16" 
-                                               Style="{StaticResource Headline}"
-                                               SemanticProperties.HeadingLevel="Level2"
-                                        />
+                        <ViewCell  >
+                                <Frame  BackgroundColor="#F1F1F1" Padding="20" CornerRadius="10" HasShadow="False" Margin="10">
+                                    <StackLayout Padding="10" Margin="10">
+                                        
+                                        <Grid Padding="0" ColumnSpacing="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label  Padding="20" Grid.Column="0" 
+                                                    Text="{Binding Name}" 
+                                                    FontSize="18" 
+                                                    Style="{StaticResource Headline}"
+                                                    SemanticProperties.HeadingLevel="Level1" 
+                                                    HorizontalOptions="StartAndExpand" />
+                                            <Label Grid.Column="1" 
+                                                   Text="{Binding EuroPrice}" 
+                                                   FontSize="16" 
+                                                   Style="{StaticResource Headline}"
+                                                   SemanticProperties.HeadingLevel="Level2" 
+                                                   HorizontalOptions="End" />
+                                        </Grid>
+
+                                      
                                         <Label Text="{Binding Content}" 
                                                FontSize="16" 
                                                Style="{StaticResource Headline}"
                                                SemanticProperties.HeadingLevel="Level4"
                                         />
-                                        <Button Text="Voir les détails" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListBooks}}, Path=ItemSelectedCommand}" CommandParameter="{Binding .}" Height="40" Width="80"/>
+                                        <Button BackgroundColor="#52b788" Text="Voir les détails" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListBooks}}, Path=ShowDetailsCommand}" CommandParameter="{Binding .}" Height="40" Width="80"/>
                                         </StackLayout>
                                 </Frame>
                         </ViewCell>

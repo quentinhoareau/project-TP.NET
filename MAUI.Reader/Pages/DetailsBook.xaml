@@ -72,8 +72,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- Bouton Lire le livre -->
-            <Button Text="Lire le livre"
+            <Button Text="{Binding CurrentBook.ReadLabel}"
                     Command="{Binding ReadBook2Command}"
                     Grid.Row="8"
                     Margin="0,30,0,0"

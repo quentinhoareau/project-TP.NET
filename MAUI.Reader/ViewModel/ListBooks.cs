@@ -10,13 +10,11 @@ namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
-        public ICommand ItemSelectedCommand { get; }
         public ICommand NextPageCommand { get;  }
         public ICommand PreviousPageCommand { get;  }
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
-        private Book _selectedBook;
         private int _currentPageIndex = 0;
-        private int _itemsPerPage = 6;
+        private readonly int _itemsPerPage = 6;
         private int _totalBooks = 0;
 
         public ListBooks()
@@ -27,13 +25,14 @@ namespace MAUI.Reader.ViewModel
             PreviousPageCommand = new RelayCommand(PreviousPage, () => {
                 return _currentPageIndex > 0;
             });
-            LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
+             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
         }
 
         private async void LoadBooks(int limit, int offset)
         {
             LibraryService.BooksPaginate booksPaginate = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks(limit, offset);
             _totalBooks = booksPaginate.TotalBooks;
+            UpdatePagesButton();
             Books.Clear();
             foreach (var book in booksPaginate.Books)
             {
@@ -41,6 +40,13 @@ namespace MAUI.Reader.ViewModel
             }
         }
 
+        public void UpdatePagesButton()
+        {
+            (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        }
+
+        [RelayCommand]
         public void ShowDetails(Book book)
         {
             Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
@@ -50,20 +56,16 @@ namespace MAUI.Reader.ViewModel
         {
             _currentPageIndex++;
             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
-            (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
-            (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            UpdatePagesButton();
         }
 
         private void PreviousPage()
         {
             _currentPageIndex--;
             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
-            (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
-            (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            UpdatePagesButton();
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
