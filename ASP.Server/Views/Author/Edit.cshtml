@@ -1,0 +1,42 @@
+@using ASP.Server.ViewModels
+@model EditAuthorViewModel
+@{
+    ViewData["Title"] = "Edit an author";
+}
+<style>
+.input-group {
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+input, textarea, select {
+    flex-basis:85%;
+}
+label {
+    flex-basis:10%;
+}
+</style>
+
+<!-- Voici une facon de faire, mais ce n'est pas la seul, a vous de jouer ! -->
+<form asp-controller="Author" asp-action="Update">
+    <input type="hidden" asp-for="Id" />
+    <div class="input-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName"/>
+    </div>
+    <span asp-validation-for="FirstName" class="text-danger"></span>
+    <div class="input-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName"/>
+        </div>
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    <div class="input-group">
+        <label asp-for="Books"></label>
+        <!--Si la page rend une erreur a cette ligne, c'est que vous n'avez pas envoyé la liste des genres dans le Controller !!! ! -->
+        <select asp-for="Books" asp-items="@(new SelectList(Model.AllBooks, "Id", "Name"))" asp-item-value="@Model.Books">
+        </select>
+    </div>
+    <span asp-validation-for="Books" class="text-danger"></span>
+    <input type="submit" value="Edit" style="width: 100%; margin-top: 50px"/>
+</form>

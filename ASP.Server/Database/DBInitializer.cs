@@ -128,7 +128,7 @@ namespace ASP.Server.Database
                 },
                 new Book() {
                     Name = "The Picture of Dorian Gray",
-                    Authors = new List<Author>() {  },
+                    Authors = new List<Author>() { JDSS },
                     Price = 10.49,
                     Content = "The Picture of Dorian Gray raconte l'histoire de Dorian Gray, un jeune homme dont le portrait vieillit à sa place alors qu'il reste éternellement jeune. Le roman explore les thèmes de la vanité, de la morale et de la décadence.",
                     Genres = new List<Genre>() { Classic },
