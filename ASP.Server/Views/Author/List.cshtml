@@ -1,0 +1,70 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Author>
+@{
+    ViewData["Title"] = "Listes auteurs";
+}
+
+<style>
+    
+    .title{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .btn{
+            display: flex;
+            align-items: center;
+        }
+        
+        p {
+            margin: 0;
+        }
+    }
+    
+    .listAuthors {
+        display:  flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .container-filter{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        
+        p {
+            margin: 0;
+        }
+    }
+</style>
+
+<div class="listAuthors">
+    <div class="title">
+        <h1>Liste des auteurs:</h1>
+        <div class="container-filter">
+             <a class="btn btn-primary" asp-area="" asp-controller="Author" asp-action="Create">Ajouter un auteur</a>
+        </div>
+    </div>
+   
+    <!-- la liste des genres est dans la variable Model qui est typé en ligne 3, elle correspond à la variable xxx dans View(xxx) du controller -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Prénom</th>
+            <th scope="col">Nom</th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var author in Model)
+        {
+            <tr>
+                <td>@author.Id</td>
+                <td>@author.FirstName</td>
+                <td>@author.LastName</td>
+                <td><a class="btn btn-info" asp-controller="Author" asp-action="Edit" asp-route-id="@author.Id">Modifier</a></td>
+            </tr>
+        }
+    </table>
+    }
+</div>
+

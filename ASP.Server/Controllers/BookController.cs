@@ -73,10 +73,7 @@ namespace ASP.Server.Controllers
         
         public ActionResult<CreateBookISBNViewModel> CreateIsbn(CreateBookISBNViewModel book)
         {
-            return View(new CreateBookISBNViewModel()
-            {
-                
-            });
+            return View(new CreateBookISBNViewModel());
         }
 
         public ActionResult<CreateBookViewModel> Insert(CreateBookViewModel book)
