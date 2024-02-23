@@ -32,7 +32,8 @@
 - ✅ Gerer la pagination de vos livres (Scroll infini, pages ou autres)
 
 # Fonctionnalité facultatives / options NON demandé et développées
-- ✅ Gestion des erreurs : A la création, modification ou bien dans l'appel à l'API des livres, lorsqu'une erreur est commise, il reste sur la page de création/modification et expose l'erreur.
+- ✅ Gestion des erreurs : A la création, modification ou bien dans l'appel à l'API des livres, lorsqu'une erreur est commise, il reste sur la page de création/modification.
+- ✅ Ajout de la page des auteurs : possibilité d'ajouter ou modifier des auteurs (avec une liste des livres associés)
 
 # Autre précision : 
 - ⚠️ Dans le premier input, nous avons une liste proposant : Auteurs / Genres. En sélectionnant Auteur ou Genres : cela affiche dans l'ordre croissant, la liste des livres.
