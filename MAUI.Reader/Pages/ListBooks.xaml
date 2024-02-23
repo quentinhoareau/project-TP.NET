@@ -62,7 +62,7 @@
                                                Style="{StaticResource Headline}"
                                                SemanticProperties.HeadingLevel="Level4"
                                         />
-                                        <Button BackgroundColor="#52b788" Text="Voir les détails" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListBooks}}, Path=ShowDetailsCommand}" CommandParameter="{Binding .}" Height="40" Width="80"/>
+                                        <Button BackgroundColor="#52b788" Text="Voir les détails" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ListBooks}}, Path=ItemSelectedCommand}" CommandParameter="{Binding .}" Height="40" Width="80"/>
                                         </StackLayout>
                                 </Frame>
                         </ViewCell>

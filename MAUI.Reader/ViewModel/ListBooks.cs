@@ -10,12 +10,14 @@ namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
-        public ICommand NextPageCommand { get;  }
-        public ICommand PreviousPageCommand { get;  }
+        public ICommand NextPageCommand { get; set; }
+        public ICommand PreviousPageCommand { get; set; }
+        
         public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
         private int _currentPageIndex = 0;
         private readonly int _itemsPerPage = 6;
         private int _totalBooks = 0;
+        public ICommand ItemSelectedCommand { get; }
 
         public ListBooks()
         {
@@ -26,6 +28,8 @@ namespace MAUI.Reader.ViewModel
                 return _currentPageIndex > 0;
             });
              LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
+             
+             ItemSelectedCommand = new Command<Book>(ShowDetails);
         }
 
         private async void LoadBooks(int limit, int offset)
@@ -39,11 +43,12 @@ namespace MAUI.Reader.ViewModel
                 Books.Add(book);
             }
         }
-
+        
         public void UpdatePagesButton()
         {
-            (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
-            (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            // NextPageCommand.
+            // (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            // (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
         }
 
         [RelayCommand]
@@ -51,14 +56,12 @@ namespace MAUI.Reader.ViewModel
         {
             Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
         }
-
         private void NextPage()
         {
             _currentPageIndex++;
             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
             UpdatePagesButton();
         }
-
         private void PreviousPage()
         {
             _currentPageIndex--;

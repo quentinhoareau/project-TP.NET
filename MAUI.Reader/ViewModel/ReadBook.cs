@@ -42,6 +42,7 @@ namespace MAUI.Reader.ViewModel
             if (selectedText != "")
             {
                 textToSpeech = selectedText;
+                selectedText = "";
             }
             synth.SpeakCompleted += RestartReading;
             synth.SpeakAsync(textToSpeech);
