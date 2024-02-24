@@ -10,68 +10,67 @@ namespace MAUI.Reader.ViewModel
 {
     public partial class ListBooks : INotifyPropertyChanged
     {
-        public ICommand NextPageCommand { get; set; }
-        public ICommand PreviousPageCommand { get; set; }
+        private int PageSize = 6;
+        private int _currentPage = 1;
         
-        public ObservableCollection<Book> Books { get; set; } = new ObservableCollection<Book>();
-        private int _currentPageIndex = 0;
-        private readonly int _itemsPerPage = 6;
-        private int _totalBooks = 0;
+        public ObservableCollection<Book> Books { get; private set; } = new ObservableCollection<Book>();
         public ICommand ItemSelectedCommand { get; }
+        public bool IsNextButtonEnabled { get; set; } = true;
+        public bool IsPreviousButtonEnabled { get; set; } = false;
 
         public ListBooks()
         {
-            NextPageCommand = new RelayCommand(NextPage, () => {
-                return _totalBooks > (_currentPageIndex + 1) * _itemsPerPage;
-            });
-            PreviousPageCommand = new RelayCommand(PreviousPage, () => {
-                return _currentPageIndex > 0;
-            });
-             LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
+             LoadBooks();
              
              ItemSelectedCommand = new Command<Book>(ShowDetails);
         }
-
-        private async void LoadBooks(int limit, int offset)
+        private void UpdateBooks(List<Book> allBooks)
         {
-            LibraryService.BooksPaginate booksPaginate = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks(limit, offset);
-            _totalBooks = booksPaginate.TotalBooks;
-            UpdatePagesButton();
             Books.Clear();
-            foreach (var book in booksPaginate.Books)
+            foreach (var book in allBooks)
             {
                 Books.Add(book);
             }
         }
-        
-        public void UpdatePagesButton()
+        [RelayCommand]
+        public void NextPage()
         {
-            // NextPageCommand.
-            // (NextPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
-            // (PreviousPageCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            _currentPage++;
+            LoadBooks();
+            UpdateButtonStates();
+        }
+        [RelayCommand]
+        public void PreviousPage()
+        {
+            if (_currentPage > 1)
+            {
+                _currentPage--;
+                LoadBooks();
+                UpdateButtonStates();
+            }
+        }
+        private void UpdateButtonStates()
+        {
+            // Mettre à jour l'état des boutons en fonction de la page actuelle
+            IsNextButtonEnabled = _currentPage < PageSize;
+            IsPreviousButtonEnabled = _currentPage > 1;
+
+        }
+
+
+        private async void LoadBooks()
+        {
+            int offset = (_currentPage - 1) * PageSize;
+            int limit = PageSize;
+            LibraryService.BooksPaginate booksPaginate = await Ioc.Default.GetRequiredService<LibraryService>().GetAllBooks(limit, offset);
+            PageSize = booksPaginate.Books.Count();
+            UpdateBooks(booksPaginate.Books);
         }
 
         [RelayCommand]
         public void ShowDetails(Book book)
         {
             Ioc.Default.GetRequiredService<INavigationService>().Navigate<DetailsBook>(book);
-        }
-        private void NextPage()
-        {
-            _currentPageIndex++;
-            LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
-            UpdatePagesButton();
-        }
-        private void PreviousPage()
-        {
-            _currentPageIndex--;
-            LoadBooks(_itemsPerPage, _currentPageIndex * _itemsPerPage);
-            UpdatePagesButton();
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
