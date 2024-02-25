@@ -1,5 +1,5 @@
 # TP .NET
-
+Le rendu principal se trouve dans la branche "main"
 # Membres
 - Hoareau Quentin 
 - Diallo Mamadou Mouctar
